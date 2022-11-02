@@ -1,0 +1,80 @@
+<!-- Formulario -->
+<section class="page-section" id="registro">
+
+    <div class="container">
+
+        <h2 class="mb-4">Formulario de registro</h2>
+        <div class="col-lg-8 col-xl-7">
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="bg-light p-2 border border-2 rounded-1"
+                autocomplete="off">
+
+
+                <!-- email -->
+                <div class="col-md-12 col-xs-12">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">email</label>
+                        <input [ngClass]="{ 'is-invalid': enviado && f['email'].errors }" class="ps-1 form-control"
+                            formControlName="email" type="text">
+                        <div *ngIf="enviado && f['email'].errors" class="invalid-feedback">
+                            <div *ngIf="f['email'].errors['invalido']">No parece un eMail válido</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- password -->
+                <div class="col-md-12 col-xs-12">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">password</label>
+                        <div class="input-group">
+                            <input [type]="fieldTextType ? 'text' : 'password'"
+                                [ngClass]="{ 'is-invalid': enviado && f['password'].errors }" class="ps-1 form-control"
+                                formControlName="password" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="bi" [ngClass]="{
+                                      'bi-eye-slash-fill': !fieldTextType,
+                                      'bi-eye-fill': fieldTextType
+                                    }" (click)="toggleFieldTextType()"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="enviado && f['password'].errors" class="invalid-feedback">
+                                <div *ngIf="f['password'].errors['required']">password obligatorio</div>
+                                <div *ngIf="f['password'].errors['minlength']">como mínimo 4 caracteres</div>
+                                <div *ngIf="f['password'].errors['maxlength']">como máximo 12 caracteres</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- password2 -->
+                <div class="col-md-12 col-xs-12">
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">password2</label>
+                        <input [ngClass]="{ 'is-invalid': enviado && f['password2'].errors }" class="ps-1 form-control"
+                            formControlName="password2" type="password">
+                        <div *ngIf="enviado && f['password2'].errors" class="invalid-feedback">
+                            <div *ngIf="f['password2'].errors['required']">password obligatorio</div>
+                            <div *ngIf="f['password2'].errors['matching']">Los passwords no coinciden</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Botones -->
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <!-- <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Enviar</button>
+                -->
+
+
+                <hr>
+                registerForm.value:{{registerForm.value | json}}<br>
+                registerForm.valid:{{registerForm.valid | json}}<br>
+                registerForm.errors:{{registerForm.errors | json}}<br>
+
+
+            </form>
+
+        </div>
+    </div>
+</section>
