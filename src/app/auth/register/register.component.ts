@@ -1,6 +1,7 @@
+import { UsersService } from './../services/users.service';
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
-import CustomVal from '../providers/CustomValidators';
+import { Validators, UntypedFormBuilder } from '@angular/forms';
+import CustomVal from '../../providers/CustomValidators';
 
 @Component({
   selector: 'app-register',
@@ -15,8 +16,10 @@ export class RegisterComponent implements OnInit {
   fieldTextType: boolean = false;
   enviado: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
-
+  constructor(
+    private fb: UntypedFormBuilder,
+    private srvAuth: UsersService
+  ) { }
 
   registerForm = this.fb.group({
     email: ['', [Validators.required, CustomVal.emailValidator]],
@@ -43,7 +46,10 @@ export class RegisterComponent implements OnInit {
       console.log(this.registerForm.errors);
       return;
     }
-    alert('valido')
+
+    this.srvAuth.registro(this.registerForm.value).subscribe(response => {
+      console.log(response);
+    });
   }
 
   toggleFieldTextType() {
