@@ -1,7 +1,8 @@
-import { UsersService } from './../services/users.service';
+import { AuthService } from '../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Validators, UntypedFormBuilder } from '@angular/forms';
 import CustomVal from '../../providers/CustomValidators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,8 +18,9 @@ export class RegisterComponent implements OnInit {
   enviado: boolean = false;
 
   constructor(
+    public route: Router,
     private fb: UntypedFormBuilder,
-    private srvAuth: UsersService
+    private srvAuth: AuthService
   ) { }
 
   registerForm = this.fb.group({
@@ -32,6 +34,7 @@ export class RegisterComponent implements OnInit {
   );
 
   ngOnInit(): void {
+    this.srvAuth.logOut();
   }
 
   get f() {
@@ -47,8 +50,21 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.srvAuth.registro(this.registerForm.value).subscribe(response => {
-      console.log(response);
+    this.srvAuth.registro(this.registerForm.value).subscribe({
+      next: (resp) => {
+        console.log(resp);
+        const data = resp.data;
+        if (resp.error) {
+          alert(`ERROR: ${resp.message.email}`);
+          return;
+        } else {
+          alert(`CORRECTO: ${resp.message}`);
+          this.route.navigateByUrl('/login');
+          return
+        }
+      },
+      error: (err) => console.error(err),
+      complete: () => console.info('complete')
     });
   }
 

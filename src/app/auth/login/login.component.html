@@ -26,29 +26,23 @@
                 <div class="col-md-12 col-xs-12">
                     <div class="mb-3">
                         <label for="password" class="form-label">password</label>
-                        <div class="input-group">
-                            <input [type]="fieldTextType ? 'text' : 'password'"
-                                [ngClass]="{ 'is-invalid': enviado && f['password'].errors }" class="ps-1 form-control"
-                                formControlName="password" />
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="bi" [ngClass]="{
-                                      'bi-eye-slash-fill': !fieldTextType,
-                                      'bi-eye-fill': fieldTextType
-                                    }" (click)="toggleFieldTextType()"></i>
-                                </span>
-                            </div>
-                            <div *ngIf="enviado && f['password'].errors" class="invalid-feedback">
-                                <div *ngIf="f['password'].errors['required']">password obligatorio</div>
-                            </div>
+                        <input type='password' [ngClass]="{ 'is-invalid': enviado && f['password'].errors }"
+                            class="ps-1 form-control" formControlName="password" />
+                        <div *ngIf="enviado && f['password'].errors" class="invalid-feedback">
+                            <div *ngIf="f['password'].errors['required']">password obligatorio</div>
                         </div>
                     </div>
                 </div>
 
 
                 <!-- Botones -->
-                <button type="submit" class="btn btn-primary">Enviar</button>
-
+                <button 
+                    type="submit" 
+                    [disabled]="procesando" 
+                    class="btn btn-primary">
+                    <i *ngIf="procesando" class="fa fa-spinner fa-spin"></i> 
+                    Enviar
+                </button>
                 <hr>
                 loginForm.value:{{loginForm.value | json}}<br>
                 loginForm.valid:{{loginForm.valid | json}}<br>

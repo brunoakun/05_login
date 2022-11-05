@@ -15,7 +15,7 @@ import { ListadoComponent } from './listado/listado.component';
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    ListadoComponent 
+    ListadoComponent    
   ],
   imports: [
     BrowserModule,

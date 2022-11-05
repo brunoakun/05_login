@@ -1,3 +1,4 @@
+import { JwtDecodeService } from './jwt-decode.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CookieService } from 'ngx-cookie-service';
@@ -6,27 +7,40 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class AuthService {
+
+  // Propiedades
   apiURL: string = environment.apiURL;
+  jwtData: any = {};
 
   constructor(
     private http: HttpClient,
-    private cookies: CookieService
+    private srvJwt: JwtDecodeService
   ) { }
 
   login(form: any) {
     console.log(form)
+    sessionStorage.removeItem("token");
     return this.http.post<any>(`${this.apiURL}/login`, form);
-   }
+  }
+
+  logOut() {
+    sessionStorage.removeItem("token");
+    this.jwtData = {};
+  }
 
   registro(form: any) {
+    sessionStorage.removeItem("token");
     return this.http.post<any>(`${this.apiURL}/register`, form);
   }
 
   setToken(token: string) {
-    this.cookies.set("token", token);
+    sessionStorage.setItem("token", token);
+    this.jwtData = this.srvJwt.DecodeToken(token);
   }
   getToken() {
-    return this.cookies.get("token");
+    let token = sessionStorage.getItem("token");
+    if (token) return token;
+    return ('');
   }
 }
